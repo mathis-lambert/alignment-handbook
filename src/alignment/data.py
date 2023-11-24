@@ -16,7 +16,7 @@
 import re
 from typing import List, Literal, Optional
 
-from datasets import DatasetDict, concatenate_datasets, load_dataset
+from datasets import DatasetDict, concatenate_datasets, load_dataset, load_from_disk
 
 from .configs import DataArguments
 
@@ -32,7 +32,8 @@ def apply_chat_template(
         return re.sub(f"^{re.escape(pattern)}", "", s)
 
     if task in ["sft", "generation"]:
-        messages = example["messages"]
+        print("EXAMPLE :", example)
+        messages = example["data"]["messages"]
         # We add an empty system message if there is none
         if messages[0]["role"] != "system":
             messages.insert(0, {"role": "system", "content": ""})
@@ -122,6 +123,7 @@ def get_datasets(
     else:
         raise ValueError(f"Data config {data_config} not recognized.")
 
+    print("##################### ", splits)
     raw_datasets = mix_datasets(dataset_mixer, splits=splits, shuffle=shuffle)
     return raw_datasets
 
@@ -145,19 +147,24 @@ def mix_datasets(dataset_mixer: dict, splits: Optional[List[str]] = None, shuffl
     for ds, frac in dataset_mixer.items():
         fracs.append(frac)
         for split in splits:
+            print("############## ", split)
             if "train" in split:
                 raw_train_datasets.append(
-                    load_dataset(
-                        ds,
-                        split=split,
-                    )
+                    load_from_disk(f"{ds}{split}")
+                    # load_dataset(
+                        
+                    #     ds,
+                    #     split=split,
+                    # )
                 )
             elif "test" in split:
                 raw_val_datasets.append(
-                    load_dataset(
-                        ds,
-                        split=split,
-                    )
+                    load_from_disk(f"{ds}{split}")
+                    # load_dataset(
+                        
+                    #     ds,
+                    #     split=split,
+                    # )
                 )
             else:
                 raise ValueError(f"Split type {split} not recognized as one of test or train.")

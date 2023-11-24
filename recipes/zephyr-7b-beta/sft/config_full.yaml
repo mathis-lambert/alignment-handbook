@@ -1,15 +1,15 @@
 # Model arguments
-model_name_or_path: mistralai/Mistral-7B-v0.1
+model_name_or_path: HuggingFaceH4/zephyr-7b-alpha
 model_revision: main
 torch_dtype: bfloat16
 use_flash_attention_2: true
 
 # Data training arguments
 dataset_mixer:
-  HuggingFaceH4/ultrachat_200k: 1.0
+  /workspace/work/finetuning/tickets_sft/: 1.0
 dataset_splits:
-- train_sft
-- test_sft
+- train
+- test
 preprocessing_num_workers: 12
 
 # SFT trainer config
@@ -27,12 +27,12 @@ logging_strategy: steps
 lr_scheduler_type: cosine
 max_seq_length: 2048
 max_steps: -1
-num_train_epochs: 1
+num_train_epochs: 5
 output_dir: data/zephyr-7b-sft-full
 overwrite_output_dir: true
-per_device_eval_batch_size: 16
-per_device_train_batch_size: 32
-push_to_hub: true
+per_device_eval_batch_size: 8
+per_device_train_batch_size: 8
+push_to_hub: false
 remove_unused_columns: true
 report_to:
 - tensorboard
