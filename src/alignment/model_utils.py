@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
-<<<<<<< HEAD
-from typing import Dict, List
-=======
 from typing import Dict
->>>>>>> 80e952ec470fc173a7873efe19334d59af7c817b
 
 import torch
 from transformers import AutoTokenizer, BitsAndBytesConfig, PreTrainedTokenizer
