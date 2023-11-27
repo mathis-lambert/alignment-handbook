@@ -12,8 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from typing import Dict
+import os
+from typing import Dict, List
 
 import torch
 from transformers import AutoTokenizer, BitsAndBytesConfig, PreTrainedTokenizer
@@ -78,6 +78,8 @@ def get_tokenizer(model_args: ModelArguments, data_args: DataArguments) -> PreTr
     return tokenizer
 
 
+
+
 def get_peft_config(model_args: ModelArguments) -> PeftConfig | None:
     if model_args.use_peft is False:
         return None
@@ -94,7 +96,28 @@ def get_peft_config(model_args: ModelArguments) -> PeftConfig | None:
 
     return peft_config
 
+def list_local_files(model_path: str) -> List[str]:
+    """
+    Get the list of files in a given local directory.
+
+    Args:
+        model_path (`str`):
+            The path to the local directory.
+
+    Returns:
+        `List[str]`: the list of files in the given local directory.
+    """
+
+    if not os.path.exists(model_path) or not os.path.isdir(model_path):
+        raise ValueError(f"{model_path} doesn't exists or is not a directory")
+
+    files = []
+    for root, dirs, file_names in os.walk(model_path):
+        for file_name in file_names:
+            files.append(os.path.join(root, file_name))
+
+    return files
 
 def is_adapter_model(model_name_or_path: str, revision: str = "main") -> bool:
-    repo_files = list_repo_files(model_name_or_path, revision=revision)
+    repo_files = list_local_files(model_name_or_path)
     return "adapter_model.safetensors" in repo_files or "adapter_model.bin" in repo_files

@@ -41,7 +41,7 @@ if stale_egg_info.exists():
 # IMPORTANT: all dependencies should be listed here with their version requirements, if any.
 #   * If a dependency is fast-moving (e.g. transformers), pin to the exact version
 _deps = [
-    "accelerate==0.23.0",
+    "accelerate==0.24.1",
     "bitsandbytes==0.41.2.post2",
     "black==23.1.0",
     "datasets==2.14.6",
@@ -62,8 +62,8 @@ _deps = [
     "safetensors>=0.3.3",
     "scipy",
     "tensorboard",
-    "torch==2.1.0",
-    "transformers==4.35.0",
+    "torch==2.1.1",
+    "transformers==4.35.2",
     "trl==0.7.4",
     "jinja2>=3.0.0",
     "tqdm>=4.64.1",

@@ -178,7 +178,9 @@ def main():
         trainer.create_model_card(**kwargs)
         # Restore k,v cache for fast inference
         trainer.model.config.use_cache = True
+        logger.info("*** Save pretrained model ***")
         trainer.model.config.save_pretrained(training_args.output_dir)
+        logger.info("*** model saved ***")
 
         if training_args.push_to_hub is True:
             logger.info("Pushing to hub...")
