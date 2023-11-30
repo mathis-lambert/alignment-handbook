@@ -1,5 +1,5 @@
 # Model arguments
-model_name_or_path: alignment-handbook/zephyr-7b-sft-lora
+model_name_or_path: /workspace/work/finetuning/alignment-handbook/data/zephyr-7b-sft-full
 torch_dtype: auto
 
 # LoRA arguments
@@ -16,10 +16,10 @@ lora_target_modules:
 # Data training arguments
 
 dataset_mixer:
-  HuggingFaceH4/ultrafeedback_binarized: 1.0
+  /workspace/work/finetuning/tickets_dpo/: 1.0
 dataset_splits:
-- train_prefs
-- test_prefs
+- train
+- test
 preprocessing_num_workers: 12
 
 # DPOTrainer arguments
@@ -37,14 +37,14 @@ learning_rate: 5.0e-7
 log_level: info
 logging_steps: 10
 lr_scheduler_type: linear
-max_length: 1024
-max_prompt_length: 512
+max_length: 4096
+max_prompt_length: 2048
 num_train_epochs: 3
 optim: rmsprop
 output_dir: data/zephyr-7b-dpo-lora # It is handy to append `hub_model_revision` to keep track of your local experiments
 per_device_train_batch_size: 2
 per_device_eval_batch_size: 4
-push_to_hub: true
+push_to_hub: false
 save_strategy: "no"
 save_total_limit: null
 seed: 42
